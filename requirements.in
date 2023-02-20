@@ -1,0 +1,10 @@
+black
+mypy
+isort
+fastapi
+uvicorn[standard]
+requests
+pytest
+transformers[torch]
+sentencepiece
+protobuf==3.20
