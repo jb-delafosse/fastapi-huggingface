@@ -9,6 +9,9 @@ UVICORN_EXEC:= ${VENV_PATH}/uvicorn
 PIP_COMPILE_EXEC:=piptools compile --quiet --generate-hashes --max-rounds=20 --upgrade
 PRE_COMMIT_BIN:=${VENV_PATH}/pre-commit
 
+DOCKER_COMPOSE:=docker compose -f local/docker/docker-compose.yml
+PROJECT_NAME="hf"
+
 venv/bin/python3.10:
 	python3.10 -m venv venv
 
@@ -35,7 +38,7 @@ test:
 	${PY_VENV_M} pytest .
 
 start:
-	${UVICORN_EXEC} --factory app.entrypoints.http_server:app_factory --port 9580 --log-level debug --reload
+	${UVICORN_EXEC} --factory app.entrypoints.http_server:app_factory --host 0.0.0.0 --port 9580 --log-level debug --reload
 
 format:
 	${PY_VENV_M} black .
@@ -43,3 +46,13 @@ format:
 
 mypy:
 	${PY_VENV_M} mypy app/
+
+
+### DOCKER
+docker.start: docker.up
+
+docker.build:  ## Build the project container
+	$(DOCKER_COMPOSE) -p $(PROJECT_NAME) build --no-cache
+
+docker.up:  ## Start the containers
+	$(DOCKER_COMPOSE) -p $(PROJECT_NAME) up -d
