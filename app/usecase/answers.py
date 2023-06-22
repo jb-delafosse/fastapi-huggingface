@@ -26,7 +26,7 @@ def get_comments_as_documents(user_jwt: str, query: str) -> list[Document]:
     comments = get_comments(user_jwt, query)
     return [
         Document(
-            page_content=comment.get("text").values[0],
+            page_content=next(iter(comment.get("text").values())),
             metadata={"comment_id": comment.get("uid"), "post_id": comment.get("content")}
         )
         for comment in comments if comment.get("text")
