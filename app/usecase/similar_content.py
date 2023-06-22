@@ -11,17 +11,16 @@ class SimilarPost:
     title: Optional[str] = None
     text: Optional[str] = None
 
-def get_similar_content(query: str):
-    docs = database.FAISS_DB.similarity_search_with_score(query, k=10, fetch_k=1000)
-    logging.info(docs[0])
-    with open("./local/data/the-posts.csv", 'r') as f:
-        csvr = csv.reader(f)
-        csvr = list(csvr)
-        for doc in docs:
-            logging.info(docs)
-            yield SimilarPost(
-                id=doc[0].metadata["source"],
-                score=str(doc[1]),
-                title=csvr[doc[0].metadata["row"]][0],
-                text=csvr[doc[0].metadata["row"]][1]
-            )
+def get_similar_content(query: str, max_results: int = 3, max_relevance_score: float = 1):
+    docs = database.FAISS_DB.similarity_search_with_score(query, k=max_results)
+
+    for doc in docs:
+        if doc[1] >= max_relevance_score:
+            break
+
+        yield SimilarPost(
+            id=doc[0].metadata["id"],
+            score=str(doc[1]),
+            title=doc[0].metadata["title"],
+            text=doc[0].metadata["text"],
+        )

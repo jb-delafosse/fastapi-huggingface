@@ -13,3 +13,5 @@ faiss-cpu
 langchain
 openai
 tiktoken
+python-dotenv
+jq

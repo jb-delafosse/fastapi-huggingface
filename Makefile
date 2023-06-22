@@ -35,7 +35,7 @@ test:
 	${PY_VENV_M} pytest .
 
 start:
-	${UVICORN_EXEC} --factory app.entrypoints.http_server:app_factory --port 8080
+	${UVICORN_EXEC} --factory app.entrypoints.http_server:app_factory --port 9580 --log-level debug --reload
 
 format:
 	${PY_VENV_M} black .
