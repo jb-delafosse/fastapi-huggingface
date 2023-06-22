@@ -25,6 +25,12 @@ async def api_analyse_stream(guess_question: GuessQuestionRequest) -> Any:
     logging.info(response)
     return response
 
+@router.post("/guess-questions", status_code=200)
+async def api_analyse_stream(guess_questions: GuessQuestionRequest) -> Any:
+    response = find_questions(query=guess_questions.query)
+    logging.info(response)
+    return response
+
 @router.post("/post/search-similar", status_code=200)
 async def search_similar_content(similar_post: SimilarPostsRequest) -> Any:
     response = get_similar_content(query=similar_post.query, max_relevance_score=float(similar_post.max_relevance_score))
