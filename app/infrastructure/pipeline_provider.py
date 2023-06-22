@@ -47,5 +47,6 @@ def metadata_func(record: dict, metadata: dict) -> dict:
     metadata["id"] = record.get("id")
     metadata["title"] = record.get("title")
     metadata["text"] = record.get("text")
+    metadata["community_id"] = record.get("community_id")
 
     return metadata

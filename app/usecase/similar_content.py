@@ -10,6 +10,7 @@ class SimilarPost:
     score: str
     title: Optional[str] = None
     text: Optional[str] = None
+    community_id: Optional[str] = None
 
 def get_similar_content(query: str, max_results: int = 3, max_relevance_score: float = 1):
     docs = database.FAISS_DB.similarity_search_with_score(query, k=max_results)
@@ -23,4 +24,5 @@ def get_similar_content(query: str, max_results: int = 3, max_relevance_score: f
             score=str(doc[1]),
             title=doc[0].metadata["title"],
             text=doc[0].metadata["text"],
+            community_id=doc[0].metadata["community_id"]
         )

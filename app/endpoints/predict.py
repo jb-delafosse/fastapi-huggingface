@@ -5,6 +5,7 @@ from starlette.requests import Request
 from starlette.responses import Response
 
 from app.usecase.answers import get_answer
+from app.usecase.community import get_community_recommendation
 from app.usecase.similar_content import get_similar_content
 
 from fastapi import APIRouter
@@ -23,15 +24,26 @@ async def api_analyse_stream(input: str) -> Any:
     logging.info(response)
     return response
 
-@router.get("/content/search", status_code=200)
+@router.get("/content/search-similar", status_code=200)
 async def search_similar_content(query: str) -> Any:
     response = get_similar_content(query=query)
     return response
 
+@router.get("/post/community-recommendations", status_code=200)
+async def community_recommendations(query: str, request: Request) -> Any:
+    authorization = request.headers.get("Authorization")
+
+    if not authorization:
+        response.status_code = 401
+        return
+    jwt = authorization[len("Bearer "):]
+    response = get_community_recommendation(jwt, query)
+    return response
 
 @router.get("/guess-query-answer", status_code=200)
 def guess_query_answer(query: str, request: Request, response: Response) -> Any:
     authorization = request.headers.get("Authorization")
+
     if not authorization:
         response.status_code = 401
         return
