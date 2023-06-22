@@ -10,7 +10,7 @@ from typing import Any
 from fastapi import FastAPI
 
 from app.infrastructure import web_app
-from app.infrastructure.pipeline_provider import init_pipeline_loop
+from app.infrastructure.pipeline_provider import init_langchain_provider, init_pipeline_loop
 
 
 def app_factory() -> FastAPI:
@@ -19,5 +19,6 @@ def app_factory() -> FastAPI:
     q: Queue[tuple[str, Queue[Any]]] = Queue()
     app.model_queue = q
     asyncio.create_task(init_pipeline_loop(q))  # Use start_up event to have something more fluid ?
+    init_langchain_provider()
     return app
 

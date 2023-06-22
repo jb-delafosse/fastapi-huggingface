@@ -8,3 +8,8 @@ pytest
 transformers[torch]
 sentencepiece
 protobuf==3.20
+# langchain
+faiss-cpu
+langchain
+openai
+tiktoken
