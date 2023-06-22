@@ -7,14 +7,17 @@ class MonoliteException(Exception):
     pass
 
 
-def get_multi_comments(user_jwt: str, comment_ids: list[str]) -> list[dict]:
-    response = requests.get(
-        url=f"{_MONOLITE_BASE_URL}_ah/api/lumsites/v1/comment/getMulti",
-        params={"uid": comment_ids},
-        headers={"Authorization": f"Bearer {user_jwt}"},
-        allow_redirects=True,
-    )
-    if response.status_code >= 400:
-        raise MonoliteException
+def get_post_comments(user_jwt: str, post_ids: list[str]) -> list[dict]:
+    comments = []
+    for post_id in post_ids:
+        response = requests.get(
+            url=f"{_MONOLITE_BASE_URL}_ah/api/lumsites/v1/comment/list",
+            params={"content": post_id},
+            headers={"Authorization": f"Bearer {user_jwt}"},
+            allow_redirects=True,
+        )
+        if (code := response.status_code) >= 400:
+            raise MonoliteException(f"code: {code}, text: {response.text}")
+        comments.extend(response.json()["items"])
 
-    return response.json()["items"]
+    return comments
