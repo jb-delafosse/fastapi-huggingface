@@ -12,4 +12,4 @@ def get_comments(
     posts.
     """
     similar_posts = get_similar_content(query)
-    return get_post_comments(user_jwt, similar_posts)
+    return get_post_comments(user_jwt, [post.id for post in similar_posts])

@@ -35,5 +35,5 @@ def guess_query_answer(query: str, request: Request, response: Response) -> Any:
     if not authorization:
         response.status_code = 401
         return
-    jwt = authorization[len("Bearer :"):]
-    get_answer(jwt, query)
+    jwt = authorization[len("Bearer: "):]
+    return get_answer(jwt, query)
