@@ -12,3 +12,8 @@ services:
       - 127.0.0.1:8580:8080
     volumes:
       - ${PWD}/app:/code/app/app
+      - ${PWD}/local/data:/code/app/local/data
+      - faiss_volume:/code/app/local/db
+
+volumes:
+  faiss_volume:
