@@ -9,7 +9,7 @@ services:
     container_name: hf_api
     working_dir: /code/app
     ports:
-      - 127.0.0.1:8580:8080
+      - 9580:8080
     volumes:
       - ${PWD}/app:/code/app/app
       - ${PWD}/local/data:/code/app/local/data
