@@ -52,7 +52,10 @@ mypy:
 docker.start: docker.up
 
 docker.build:  ## Build the project container
-	$(DOCKER_COMPOSE) -p $(PROJECT_NAME) build --no-cache
+	$(DOCKER_COMPOSE) -p $(PROJECT_NAME) build $(args)
 
 docker.up:  ## Start the containers
 	$(DOCKER_COMPOSE) -p $(PROJECT_NAME) up -d
+
+docker.stop:  ## Start the containers
+	$(DOCKER_COMPOSE) -p $(PROJECT_NAME) down $(args)

@@ -53,6 +53,4 @@ def get_answer(user_jwt: str, query: str, use_prefilter: bool = False) -> str:
         )
 
     qa = RetrievalQAWithSourcesChain.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever, return_source_documents=True)
-    answer = qa(query)
-    logging.warning(answer)
-    return answer
+    return qa(query)

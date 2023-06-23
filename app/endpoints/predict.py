@@ -11,7 +11,7 @@ from app.usecase.similar_content import get_similar_content
 
 from fastapi import APIRouter, Header
 
-from app.usecase.predict import find_questions, predict
+from app.usecase.predict import find_questions, has_questions, predict
 
 router = APIRouter(
     prefix="",
@@ -20,15 +20,13 @@ router = APIRouter(
 
 
 @router.post("/guess-question", status_code=200)
-async def api_analyse_stream(guess_question: GuessQuestionRequest) -> Any:
-    response = await predict(input=guess_question.query)
-    logging.info(response)
+def api_analyse_stream(guess_question: GuessQuestionRequest) -> Any:
+    response = has_questions(query=guess_question.query)
     return response
 
 @router.post("/guess-questions", status_code=200)
 async def api_analyse_stream(guess_questions: GuessQuestionRequest) -> Any:
     response = find_questions(query=guess_questions.query)
-    logging.info(response)
     return response
 
 @router.post("/post/search-similar", status_code=200)
